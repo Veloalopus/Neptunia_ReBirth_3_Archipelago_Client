@@ -4,7 +4,7 @@ using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
 using Reloaded.Memory;
 using System;
 using System.Collections.Generic;
-using static Nep3ArchipelagoClient.src.Hooks.ItemCollection;
+using static Nep3ArchipelagoClient.src.Hooks;
 
 namespace Nep3ArchipelagoClient
 {
@@ -39,6 +39,7 @@ namespace Nep3ArchipelagoClient
                 DoOnceAfterChapter1Start = false;
                 SetupAllNations();
                 InitGear();
+                RemovePartyMember((int)CharacterId.nepgear);
             }
         }
         public void SetupAllNations()
@@ -107,7 +108,7 @@ namespace Nep3ArchipelagoClient
         }
         public static void AddItem(int id, int quantity)
         {
-            ItemCollection._addItemFunction.GetWrapper()((uint)id, (uint)quantity, (char)1);
+            ItemCollectionHooks._addItemFunction.GetWrapper()((uint)id, (uint)quantity, (char)1);
 
             //goal condition
             bool pudding = Mod.Inventory.FindItem(203, out int _);
@@ -119,6 +120,18 @@ namespace Nep3ArchipelagoClient
             {
                 Mod.SaveGame.SetTrueEndFlag();
             }
+        }
+        public static void RemovePartyMember(CharacterId character) => RemovePartyMember((int)character);
+        public static void RemovePartyMember(int characterId) => CharacterHooks._removePartyMember.GetWrapper()(characterId);
+
+        public static void ShowCharacter(CharacterId character) => ShowCharacter((int)character);
+        public static void ShowCharacter(int characterId)
+        {
+            var characterPoint = CharacterHooks._findCharacter.GetWrapper()(characterId);
+            if (characterPoint == 0) return;
+            var currentVal = memory.Read<byte>(characterPoint);
+            currentVal &= 0xff - 0x80;
+            memory.Write<byte>(characterPoint, currentVal);
         }
     }
 }
