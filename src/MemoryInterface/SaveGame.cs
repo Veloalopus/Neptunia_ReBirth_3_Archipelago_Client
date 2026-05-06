@@ -9,7 +9,7 @@ namespace Nep3ArchipelagoClient
 {
     internal class SaveGame
     {
-        public UIntPtr SaveGamePointer;
+        public static UIntPtr SaveGamePointer = 0;
         uint DungeonCountOffset = 0x103B0;
         static Memory memory = Memory.Instance;
 
@@ -144,6 +144,8 @@ namespace Nep3ArchipelagoClient
             flagPionter -= 305; // move to the flags
             for(nuint i = 0; i<5;i ++)
                 memory.Write<byte>(flagPionter+i, 0xFF);
+            if (PlanHooks.ReadPlan(53) == 1)
+                PlanHooks.FrocePlan(53, PlanFlags.Active);
         }
     }
 }

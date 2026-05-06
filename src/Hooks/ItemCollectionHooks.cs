@@ -89,7 +89,6 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static unsafe int OnCollectGatherSpot(uint eax,uint edx)
         {
             Console.WriteLine($"item id:{eax} quantity:{edx}");
-            APClient.collectedFirstItem = true;
             if (!IsAPItem)
                 //non randomized item
                 if(true)

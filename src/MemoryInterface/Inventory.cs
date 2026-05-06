@@ -6,11 +6,10 @@ namespace Nep3ArchipelagoClient.MemoryInterface
 {
     internal class Inventory
     {
-        SaveGame SaveGameInstance;
         UIntPtr InventoryPointer => InventorySizePointer + 0x04;
         const int ItemLength = 0x04;
         const UIntPtr ItemCountOffsetPointer = 0x02;
-        UIntPtr InventorySizePointer => SaveGameInstance.SaveGamePointer + 0xC7CC;
+        UIntPtr InventorySizePointer => SaveGame.SaveGamePointer + 0xC7CC;
         public int CurrentInventoryCount => Memory.Instance.Read<short>(InventorySizePointer);
 
         UIntPtr ItemPosition(int slot)
@@ -18,9 +17,8 @@ namespace Nep3ArchipelagoClient.MemoryInterface
             return InventoryPointer + (nuint)(slot * ItemLength);
         }
 
-        public Inventory(SaveGame saveGameInstance)
+        public Inventory()
         {
-            SaveGameInstance = saveGameInstance;
         }
 
         public byte GetItemCountAtSlot(int slot)

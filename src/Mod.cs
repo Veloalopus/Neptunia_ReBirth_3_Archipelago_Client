@@ -78,6 +78,7 @@ public class Mod : ModBase // <= Do not Remove.
 
         // TODO: Implement some mod logic
 
+
         APClient.ConnectToServer(_configuration.Server, _configuration.Port, _configuration.Player);
 
         var t = new Thread(start: MainLoop);
@@ -90,8 +91,8 @@ public class Mod : ModBase // <= Do not Remove.
     {
         bool test = true;
         SaveGame = new(ModuleBase);
-        Inventory = new(SaveGame);
-        while(true)
+        Inventory = new();
+        while (true)
         {
             Thread.Sleep(100);
             APClient.update();

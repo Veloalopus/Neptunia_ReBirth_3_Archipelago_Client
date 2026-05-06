@@ -15,6 +15,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
             EnemyHooks.SetupHooks(hooks);
             ItemCollectionHooks.SetupHooks(hooks);
             TextHooks.SetupHooks(hooks);
+            PlanHooks.SetupHooks(hooks);
         }
     }
 }
