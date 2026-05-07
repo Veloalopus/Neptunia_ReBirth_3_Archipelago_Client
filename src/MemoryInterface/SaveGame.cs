@@ -42,7 +42,7 @@ namespace Nep3ArchipelagoClient
                 AddPartyMember(Mod.APClient.GetStartingCharacter());
                 RemovePartyMember(CharacterId.nepgear);
                 RemovePartyMember(CharacterId.neptune);
-
+                DeleteChap0Flags();
                 //debug stuff
                 Test_Unlocks();
             }
@@ -149,6 +149,12 @@ namespace Nep3ArchipelagoClient
                 memory.Write<byte>(flagPionter+i, 0xFF);
             if (PlanHooks.ReadPlan(53) == 1)
                 PlanHooks.FrocePlan(53, PlanFlags.Build);
+        }
+        public static void DeleteChap0Flags()
+        {
+            memory.Write<byte>(SaveGamePointer + 0x91C, 0);
+            memory.Write<byte>(SaveGamePointer + 0x91D, 0);
+            memory.Write<byte>(SaveGamePointer + 0x91E, 0);
         }
 
         public void Test_Unlocks()
