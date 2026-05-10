@@ -18,6 +18,5 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data
         uni = 8,
         rom = 9,
         ram = 10,
-        all = 11,
     }
 }

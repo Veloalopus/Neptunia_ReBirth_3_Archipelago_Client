@@ -13,22 +13,27 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
         protected Dictionary<int, List<short>> GearList = new();
         protected byte Amount = 2;
         static Inventory Inventory => Mod.Inventory;
-        public static Dictionary<CharacterId,ProgressiveGear> ProgressiveGears = InitList();
-
-        static Dictionary<CharacterId, ProgressiveGear> InitList()
+        public static Dictionary<int,ProgressiveGear> ProgressiveGears = InitList();
+        public static HashSet<short> UsedItems;
+        static Dictionary<int, ProgressiveGear> InitList()
         {
-            Dictionary<CharacterId, ProgressiveGear> list = new();
-            list.Add(CharacterId.neptune, new NeptuneGear());
-            list.Add(CharacterId.nepgear, new NepgearGear());
-            list.Add(CharacterId.plutia, new PlutiaGear());
-            list.Add(CharacterId.peashy, new PeashyGear());
-            list.Add(CharacterId.blanc, new BlancGear());
-            list.Add(CharacterId.noire, new NoireGear());
-            list.Add(CharacterId.ram, new RamGear());
-            list.Add(CharacterId.uni, new UniGear());
-            list.Add(CharacterId.vert, new VertGear());
-            list.Add(CharacterId.rom, new RomGear());
-            list.Add(CharacterId.all, new ArmorGear());
+            Dictionary<int, ProgressiveGear> list = new();
+            list.Add((int)CharacterId.neptune, new NeptuneGear());
+            list.Add((int)CharacterId.nepgear, new NepgearGear());
+            list.Add((int)CharacterId.plutia, new PlutiaGear());
+            list.Add((int)CharacterId.peashy, new PeashyGear());
+            list.Add((int)CharacterId.blanc, new BlancGear());
+            list.Add((int)CharacterId.noire, new NoireGear());
+            list.Add((int)CharacterId.ram, new RamGear());
+            list.Add((int)CharacterId.uni, new UniGear());
+            list.Add((int)CharacterId.vert, new VertGear());
+            list.Add((int)CharacterId.rom, new RomGear());
+            list.Add(11, new ArmorGear());
+            if (UsedItems == null)
+                UsedItems = new();
+            foreach (var character in list)
+                foreach(var item in character.Value.GetAllItems())
+                    UsedItems.Add(item);
             return list;
         }
         public void IncreaseGearTier()
@@ -46,6 +51,15 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
             if(GearList.ContainsKey(tier))
                 foreach (var item in GearList[tier])
                     Inventory.AddItem(item, Amount);
+        }
+        protected short[] GetAllItems()
+        {
+            List<short> items = new();
+            foreach(var tier in GearList)
+            {
+                items.AddRange(tier.Value);
+            }
+            return items.ToArray();
         }
     }
 }

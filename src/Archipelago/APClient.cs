@@ -131,7 +131,7 @@ namespace Nep3ArchipelagoClient.Archipelago
                     else if (itemId > ChracterBaseID && itemId < ProgressiveGearID)
                         CharacterHooks._addNewCharacter.GetWrapper()((uint)(itemId - ChracterBaseID));
                     else if (itemId > ProgressiveGearID)
-                        ProgressiveGear.ProgressiveGears[(CharacterId)(itemId - ProgressiveGearID)].IncreaseGearTier();
+                        ProgressiveGear.ProgressiveGears[(int)(itemId - ProgressiveGearID)].IncreaseGearTier();
                     else
                         SaveGame.AddItem((int)itemId, 1);
                     Mod.SaveGame.IncrementCurrentApItemCount();

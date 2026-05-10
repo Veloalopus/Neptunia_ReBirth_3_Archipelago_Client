@@ -4,6 +4,7 @@ using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
 using Reloaded.Memory;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Nep3ArchipelagoClient
 {
@@ -39,12 +40,15 @@ namespace Nep3ArchipelagoClient
                 SetupAllNations();
                 InitGear();
                 UnlockStuff();
-                AddPartyMember(Mod.APClient.GetStartingCharacter());
-                RemovePartyMember(CharacterId.nepgear);
+                var startchar = Mod.APClient.GetStartingCharacter();
+                AddPartyMember(startchar);
+                if(startchar != CharacterId.nepgear)
+                    RemovePartyMember(CharacterId.nepgear);
                 RemovePartyMember(CharacterId.neptune);
                 DeleteChap0Flags();
                 //debug stuff
-                Test_Unlocks();
+                //Test_Unlocks();
+                Test_CharacterStruct();
             }
         }
         public void SetupAllNations()
@@ -127,7 +131,14 @@ namespace Nep3ArchipelagoClient
             }
         }
         public static void AddPartyMember(CharacterId character) => AddPartyMember((int)character);
-        public static void AddPartyMember(int characterID) => CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
+        public unsafe static void AddPartyMember(int characterID)
+        {
+            CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
+            var character = CharacterHooks.GetCharacter((CharacterId)characterID);
+            if (character == null) return;
+            character->Armor = 1;
+            character->Ornament = 1;
+        }
 
         public static void RemovePartyMember(CharacterId character) => RemovePartyMember((int)character);
         public static void RemovePartyMember(int characterId) => CharacterHooks._removePartyMember.GetWrapper()(characterId);
@@ -149,6 +160,8 @@ namespace Nep3ArchipelagoClient
                 memory.Write<byte>(flagPionter+i, 0xFF);
             if (PlanHooks.ReadPlan(53) == 1)
                 PlanHooks.FrocePlan(53, PlanFlags.Build);
+            PlanHooks.FrocePlan(9, PlanFlags.Active);
+            AddItem(39,1);
         }
         public static void DeleteChap0Flags()
         {
@@ -162,14 +175,21 @@ namespace Nep3ArchipelagoClient
             foreach(int character in Enum.GetValues(typeof(CharacterId)))
             {
                 for(int i  = 0; i<10;i ++)
-                    ProgressiveGear.ProgressiveGears[(CharacterId)character].IncreaseGearTier();
+                    ProgressiveGear.ProgressiveGears[character].IncreaseGearTier();
                 if (character == 11)
                     continue;
                 AddPartyMember(character);
             }
             foreach(var dungeon in DungeonToNation.link.Keys)
                 AddDungeon(dungeon);
-            
+        }
+        public unsafe void Test_CharacterStruct()
+        {
+            var character = CharacterHooks.GetCharacter(CharacterId.blanc);
+            if (character == null)
+                Console.WriteLine("No Character data");
+            else
+                Console.WriteLine(character->CurrentHP);
         }
     }
 }

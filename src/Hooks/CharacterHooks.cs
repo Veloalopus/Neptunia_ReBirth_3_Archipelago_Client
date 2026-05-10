@@ -1,4 +1,5 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
+using Nep3ArchipelagoClient.src.Neptunia_3_Data;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
@@ -28,6 +29,12 @@ namespace Nep3ArchipelagoClient.src.Hooks
             _addNewCharacter = hooks.CreateFunction<AddNewCharater>((int)(Mod.ModuleBase + 0xBADA0));
             _findCharacter = hooks.CreateFunction<FindCharacterPointer>((int)(Mod.ModuleBase + 0xBB2D0));
             _removePartyMember = hooks.CreateFunction<RemovePartyMember>((int)(Mod.ModuleBase + 0xBAF20));
+        }
+
+        public static unsafe Character* GetCharacter(CharacterId character)
+        {
+            var chara = (Character*)_findCharacter.GetWrapper()((int)character);
+            return chara;
         }
     }
 }
