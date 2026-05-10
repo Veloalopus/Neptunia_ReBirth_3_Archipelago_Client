@@ -9,7 +9,7 @@ Very early prototype for a client to connect to a Ap server
 
 ## Requiremnets
 
-+ Reloaded-II
++ Reloaded-II: https://github.com/Reloaded-Project/Reloaded-II
 + this mod
 
 ## Install 
