@@ -70,16 +70,23 @@ namespace Nep3ArchipelagoClient.src.Hooks
 
         }
 
+        static bool allowOrignalLoot = true;
         //get dungeon and spot id to send it to the ap server
         [Function(new[] { FunctionAttribute.Register.eax,FunctionAttribute.Register.edx }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]
         public delegate int GetGatherSpot(int dungeonID,int dungeoFlag);
         public static unsafe int OnGetGatherSpot(int eax,int edx)
         {
             Console.WriteLine($"Dungeon ID = {eax}, Gather Flag ID = {edx}");
-            long GatherspotID = (eax * 10) + edx+1;
-            Mod.APClient.SendLocation(GatherspotID);
-            Mod.APClient.GetItemName(GatherspotID, ref TextHooks.ReplacementText);
-            TextHooks.DoReplaceText = true;
+            allowOrignalLoot = true;
+            if (Mod.APClient.IsConnected)
+            {
+                long GatherspotID = (eax * 10) + edx + 1;
+                if (Mod.APClient.CheckedLocation.Contains(GatherspotID)) return eax;
+                Mod.APClient.SendLocation(GatherspotID);
+                Mod.APClient.GetItemName(GatherspotID, ref TextHooks.ReplacementText);
+                TextHooks.DoReplaceText = true;
+                allowOrignalLoot = false;
+            }
             return eax;
         }
 
@@ -89,12 +96,10 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static unsafe int OnCollectGatherSpot(uint eax,uint edx)
         {
             Console.WriteLine($"item id:{eax} quantity:{edx}");
-            if (!IsAPItem)
                 //non randomized item
-                if(true)
-                    _addItemFunction.GetWrapper()(eax,edx,(char)1);
-                else
-                    _addItemFunction.GetWrapper()(1, 1, (char)1);
+            if(allowOrignalLoot)
+                _addItemFunction.GetWrapper()(eax,edx,(char)1);
+
             return (int)eax;
         }
 

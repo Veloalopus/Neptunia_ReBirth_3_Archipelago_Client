@@ -22,7 +22,8 @@ namespace Nep3ArchipelagoClient.Archipelago
         public bool IsConnected => Session != null && Session.Socket.Connected;
         private long PlayerID = 0;
         private Dictionary<long, ScoutedItemInfo> ItemAtLocation = new();
-        internal CharacterId StartingCharacter = CharacterId.neptune;
+        internal CharacterId StartingCharacter = CharacterId.nepgear;
+        internal HashSet<long> CheckedLocation = new();
         public bool ConnectToServer(string destination,int port,string user, string password = "")
         {
             if (Session != null && Session.Socket.Connected)
@@ -112,6 +113,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         {
             if (IsConnected)
             {
+                CheckedLocation.Add(id);
                 CheckIfGoaled(id);
                 Session.Locations.CompleteLocationChecks(id);
                 return true;
