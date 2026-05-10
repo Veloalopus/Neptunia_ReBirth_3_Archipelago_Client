@@ -79,13 +79,13 @@ namespace Nep3ArchipelagoClient
                 character.UnlockTier(0);
             }
         }
-        public void AddDungeon(byte dungeonId)
+        public static void AddDungeon(short dungeonId)
         {
             if (dungeonId == 66) return;
             var dungeonListLength = memory.Read<byte>(SaveGamePointer + 0x103b0);
             var writeInto = SaveGamePointer + (nuint)(0x103b4 + 0x203c * dungeonListLength);
             memory.Write<byte>(writeInto, 0x0F);
-            memory.Write<byte>(writeInto + 2, dungeonId);
+            memory.Write<short>(writeInto + 2, dungeonId);
             var nation = DungeonToNation.GetNation(dungeonId);
             memory.Write<byte>(writeInto + 4, (byte) nation); // 1 needs to replaced soonish for the nation id
             memory.Write<byte>(SaveGamePointer + 0x103b0, ++dungeonListLength);
@@ -167,6 +167,7 @@ namespace Nep3ArchipelagoClient
             PlanHooks.FrocePlan(9, PlanFlags.Active);
             PlanHooks.FrocePlan(2032,PlanFlags.Found);
             PlanHooks.EnablePlan(2032);
+            AddDungeon(302);
             AddItem(241, 1);
             AddItem(244, 1);
             AddItem(701, 99);

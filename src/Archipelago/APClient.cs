@@ -129,7 +129,7 @@ namespace Nep3ArchipelagoClient.Archipelago
                 {
                     var itemId = Session.Items.AllItemsReceived[currentItemNr].ItemId;
                     if (itemId > DungeonBaseID && itemId < DungeonBaseID + 1_000_000)
-                        Mod.SaveGame.AddDungeon((byte)(itemId - DungeonBaseID));
+                        SaveGame.AddDungeon((short)(itemId - DungeonBaseID));
                     else if (itemId > ChracterBaseID && itemId < ProgressiveGearID)
                         CharacterHooks._addNewCharacter.GetWrapper()((uint)(itemId - ChracterBaseID));
                     else if (itemId > ProgressiveGearID)
