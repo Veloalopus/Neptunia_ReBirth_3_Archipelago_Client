@@ -15,7 +15,7 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
             GearList.Add(2, new List<short>() { 1224, 1227 });
             GearList.Add(3, new List<short>() { 1228, 1229 });
             GearList.Add(4, new List<short>() { 1230 });
-            GearList.Add(5, new List<short>() { 1231, 1232 });
+            GearList.Add(5, new List<short>() { 1231, 1232, 1233 });
         }
     }
 }

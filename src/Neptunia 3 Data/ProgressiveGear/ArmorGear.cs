@@ -10,7 +10,7 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
     {
         public ArmorGear()
         {
-            GearList.Add(0, new List<short>() { 1601, 1602, 1603, 1604, 1605, 1606, 1607, 1608, 1609, 1610 });
+            GearList.Add(0, new List<short>() { 1632, 1633 });
             GearList.Add(1, new List<short>() { 1641, 1642 });
             GearList.Add(2, new List<short>() { 1650, 1651 });
             GearList.Add(3, new List<short>() { 1655, 1656 });
