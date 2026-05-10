@@ -2,6 +2,11 @@
 
 Very early prototype for a client to connect to a Ap server
 
+## Notes
++ Gather spot yield their original loot table after sending the check
++ There is only 1 shop
++ No Guild
+
 ## Requiremnets
 
 + Reloaded-II
