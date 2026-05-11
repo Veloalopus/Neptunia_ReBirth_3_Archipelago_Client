@@ -154,8 +154,8 @@
 param (
     $IsPrerelease=$False, 
     $MakeDelta=$False, 
-    $ChangelogPath="",
-    $ReadmePath="",
+    $ChangelogPath="CHANGELOG.md",
+    $ReadmePath="README.md",
     $Build=$True,
     $BuildR2R=$False,
     $RemoveExe=$True,
@@ -168,14 +168,14 @@ param (
 
     ## => User: Delta Config
     # Pick one and configure settings below.
-    $MetadataFileName = "Sewer56.Update.ReleaseMetadata.json",
-    $UseGitHubDelta = $False, # GitHub Releases
+    $MetadataFileName = " Nep3ArchipelagoClient.ReleaseMetadata.json",
+    $UseGitHubDelta = $True, # GitHub Releases
     $UseGameBananaDelta = $False,
     $UseNuGetDelta = $False,
 
-    $GitHubUserName = "", # Name of the GitHub user where the mod is contained
-    $GitHubRepoName = "", # Name of the GitHub repo where the mod is contained
-    $GitHubFallbackPattern = "", # For migrating from legacy build script.
+    $GitHubUserName = "BlackSoulKnight", # Name of the GitHub user where the mod is contained
+    $GitHubRepoName = "Neptunia_ReBirth_3_Archipelago_Client", # Name of the GitHub repo where the mod is contained
+    $GitHubFallbackPattern = " Nep3ArchipelagoClient0.1.0.7z ", # For migrating from legacy build script.
     $GitHubInheritVersionFromTag = $True, # Uses version determined from release tag as opposed to metadata file in latest release.
 
     $GameBananaItemId = 333681, # From mod page URL.
@@ -186,8 +186,8 @@ param (
 
     ## => User: Publish Config
     $PublishGeneric    = $True,
-    $PublishNuGet      = $True,
-    $PublishGameBanana = $True
+    $PublishNuGet      = $False,
+    $PublishGameBanana = $False
 )
 
 ## => User: Publish Output

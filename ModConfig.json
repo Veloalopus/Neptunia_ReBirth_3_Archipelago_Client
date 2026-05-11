@@ -2,7 +2,7 @@
   "ModId": "Nep3ArchipelagoClient",
   "ModName": "Neptunia 3 Archipelago Client",
   "ModAuthor": "BlackSoulKnight",
-  "ModVersion": "0.1.0",
+  "ModVersion": "0.1.1",
   "ModDescription": "Client Mod for Archipelago",
   "ModDll": "Nep3ArchipelagoClient.dll",
   "ModIcon": "Preview.png",
@@ -10,11 +10,15 @@
   "ModR2RManagedDll64": "x64/Nep3ArchipelagoClient.dll",
   "ModNativeDll32": "",
   "ModNativeDll64": "",
-  "Tags": [],
+  "Tags": [
+    "Archipelago",
+    "Client",
+    "Randomizer"
+  ],
   "CanUnload": false,
   "HasExports": false,
   "IsLibrary": false,
-  "ReleaseMetadataFileName": "Nep3ArchipelagoClient.ReleaseMetadata.json",
+  "ReleaseMetadataFileName": "Nep3ApClient.ReleaseMetadata.json",
   "IgnoreRegexes": [
     ".*\\.json"
   ],
@@ -41,7 +45,7 @@
       "UserName": "BlackSoulKnight",
       "RepositoryName": "Neptunia_ReBirth_3_Archipelago_Client",
       "UseReleaseTag": true,
-      "AssetFileName": "Nep3ApClient.zip"
+      "AssetFileName": "Nep3ApClient.7z"
     }
   },
   "IsUniversalMod": false,
