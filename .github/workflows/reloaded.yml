@@ -38,6 +38,11 @@ env:
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/') }}
   RELEASE_TAG: ${{ github.ref_name }}
 
+permissions:  # permissions required for attestation
+  id-token: 'write'
+  attestations: 'write'
+  contents: 'write'  # additionally required for release
+
 jobs:
   build:
     runs-on: windows-latest
