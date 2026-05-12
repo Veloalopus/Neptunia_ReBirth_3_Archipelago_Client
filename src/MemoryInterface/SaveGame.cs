@@ -165,6 +165,7 @@ namespace Nep3ArchipelagoClient
             if (PlanHooks.ReadPlan(53) == 1)
                 PlanHooks.FrocePlan(53, PlanFlags.Build);
             PlanHooks.FrocePlan(9, PlanFlags.Active);
+            PlanHooks.FrocePlan(14, PlanFlags.Active);
             PlanHooks.FrocePlan(2032,PlanFlags.Found);
             PlanHooks.EnablePlan(2032);
             AddDungeon(302);

@@ -1,3 +1,6 @@
+## 0.1.2
++ Jumping star auto enabled
+
 ## 0.1.1
 + Fixed sound for failed sell
 
