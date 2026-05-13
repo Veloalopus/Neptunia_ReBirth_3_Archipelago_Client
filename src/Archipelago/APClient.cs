@@ -1,9 +1,9 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
-using Nep3ArchipelagoClient.src.Hooks;
-using Nep3ArchipelagoClient.src.Neptunia_3_Data;
-using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
+using Nep3ArchipelagoClient.Hooks;
+using Nep3ArchipelagoClient.Neptunia_3_Data;
+using Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear;
 using Newtonsoft.Json.Linq;
 
 namespace Nep3ArchipelagoClient.Archipelago
@@ -72,34 +72,24 @@ namespace Nep3ArchipelagoClient.Archipelago
         }
 
         internal CharacterId GetStartingCharacter() => StartingCharacter;
-        public void GetItemName(long id,ref byte[] output)
+        public string GetItemName(long id)
         {
-            for (int i = 0; i< output.Length; i++)
-            {
-                output[i] = 0;
-            }
             if (IsConnected)
             {
                 if (!ItemAtLocation.ContainsKey(id))
                 {
-                    "Location not Found"u8.ToArray().CopyTo(output, 0);
-                    return;
+                    return "Location not Found";
                 }
                 var itemName = ItemAtLocation[id].ItemName;
                 int idx = 0;
                 if (String.IsNullOrEmpty(itemName))
-                    "No Itemname Found"u8.ToArray().CopyTo(output, 0);
+                    return "No Itemname Found";
                 else
-                    foreach (char c in itemName)
-                    {
-                        if (!(idx < output.Length)) break;
-                        output[idx] = ((byte)c);
-                        idx++;
-                    }
+                    return itemName;
             }
             else
             {
-                "Not Connected"u8.ToArray().CopyTo(output, 0);
+                return "Not Connected";
             }
         }
         public void CheckIfGoaled(long id)
@@ -122,20 +112,20 @@ namespace Nep3ArchipelagoClient.Archipelago
         }
         public void update()
         {
-            if (IsConnected && !Mod.SaveGame.DoOnceAfterChapter1Start)
+            if (IsConnected && Mod.SaveGame.IsInit)
             {
                 int currentItemNr = Mod.SaveGame.GetCurrentApItemCount();
                 if (currentItemNr < Session.Items.AllItemsReceived.Count)
                 {
                     var itemId = Session.Items.AllItemsReceived[currentItemNr].ItemId;
                     if (itemId > DungeonBaseID && itemId < DungeonBaseID + 1_000_000)
-                        SaveGame.AddDungeon((short)(itemId - DungeonBaseID));
+                        Mod.SaveGame.AddDungeon((short)(itemId - DungeonBaseID));
                     else if (itemId > ChracterBaseID && itemId < ProgressiveGearID)
                         CharacterHooks._addNewCharacter.GetWrapper()((uint)(itemId - ChracterBaseID));
                     else if (itemId > ProgressiveGearID)
                         ProgressiveGear.ProgressiveGears[(int)(itemId - ProgressiveGearID)].IncreaseGearTier();
                     else
-                        SaveGame.AddItem((int)itemId, 1);
+                        Mod.Inventory.AddItem((int)itemId, 1);
                     Mod.SaveGame.IncrementCurrentApItemCount();
                 }
             }

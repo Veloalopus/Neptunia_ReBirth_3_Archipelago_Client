@@ -1,11 +1,8 @@
-﻿using Reloaded.Hooks.Definitions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Nep3ArchipelagoClient.Hooks.Rebirth2;
+using Reloaded.Hooks.Definitions;
 
-namespace Nep3ArchipelagoClient.src.Hooks
+
+namespace Nep3ArchipelagoClient.Hooks
 {
     internal class Hooks
     {
@@ -17,6 +14,15 @@ namespace Nep3ArchipelagoClient.src.Hooks
             TextHooks.SetupHooks(hooks);
             PlanHooks.SetupHooks(hooks);
             ShopHook.SetupHooks(hooks);
+            switch (Mod.Game)
+            {
+                case NeptuniaGame.Neptunia_ReBirth_2:
+                    Rebirth2.Hooks.SetupHooks(hooks);
+                    break;
+                case NeptuniaGame.Neptunia_ReBirth_3:
+                    Rebirth3.Hooks.SetupHooks(hooks);
+                    break;
+            }
         }
     }
 }

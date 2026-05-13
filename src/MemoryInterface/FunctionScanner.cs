@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Reloaded.Memory.Sigscan;
 
-namespace Nep3ArchipelagoClient.src.MemoryInterface
+namespace Nep3ArchipelagoClient.MemoryInterface
 {
     public unsafe static class FunctionScanner
     {
@@ -21,6 +21,7 @@ namespace Nep3ArchipelagoClient.src.MemoryInterface
                 Console.WriteLine($"Function {functionName} could not be found");
                 return false;
             }
+            Console.WriteLine($"Function {functionName} found at Offset:{result.Offset.ToString("X")}");
             offset = (nuint)result.Offset;
             return true;
         }

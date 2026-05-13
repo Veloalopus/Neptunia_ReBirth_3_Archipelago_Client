@@ -1,5 +1,5 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
-using Nep3ArchipelagoClient.src.MemoryInterface;
+using Nep3ArchipelagoClient.MemoryInterface;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
@@ -7,7 +7,7 @@ using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
 using System.Text;
 
-namespace Nep3ArchipelagoClient.src.Hooks
+namespace Nep3ArchipelagoClient.Hooks
 {
     internal class TextHooks
     {
@@ -23,6 +23,17 @@ namespace Nep3ArchipelagoClient.src.Hooks
             for (int i = 0; i < ReplacementText.Length; i++)
             {
                 ReplacementText[i] = 0;
+            }
+        }
+        public static void NewText(string text)
+        {
+            ClearReplacementText();
+            int idx = 0;
+            foreach(char c in text)
+            {
+                if (idx >= ReplacementText.Length) break;
+                ReplacementText[idx] = (byte)c;
+                idx++;
             }
         }
 
@@ -77,10 +88,11 @@ namespace Nep3ArchipelagoClient.src.Hooks
 
             if (FunctionScanner.FindFunction("Item Text 1", "E8 ?? ?? ?? ?? 50 89 45 ?? E8 ?? ?? ?? ?? F3 0F 10 0D",out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(testReplacement, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteAfter).Activate());
-            if(FunctionScanner.FindFunction("Item Text 1", "E8 ?? ?? ?? ?? 83 C4 04 50 57 E8 ?? ?? ?? ?? 83 C4 04 50 57 E8 ?? ?? ?? ?? 50", out offset))
+            if(FunctionScanner.FindFunction("Item Text 2", "E8 ?? ?? ?? ?? 83 C4 04 50 57 E8 ?? ?? ?? ?? 83 C4 04 50 57 E8 ?? ?? ?? ?? 50", out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(testReplacement, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteAfter).Activate());
-            if(FunctionScanner.FindFunction("Gather Item Text", "E8 ?? ?? ?? ?? 8B 1D ?? ?? ?? ?? 50", out offset))
-                _asmHooks.Add(hooks.CreateAsmHook(testReplacement, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteAfter).Activate());
+
+
+
 
 
             string[] enemyDrop = {

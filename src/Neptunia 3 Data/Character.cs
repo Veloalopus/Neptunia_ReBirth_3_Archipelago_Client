@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nep3ArchipelagoClient.src.Neptunia_3_Data
+namespace Nep3ArchipelagoClient.Neptunia_3_Data
 {
 
     public struct ComboAttack

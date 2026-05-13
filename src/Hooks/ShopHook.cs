@@ -1,6 +1,6 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
-using Nep3ArchipelagoClient.src.MemoryInterface;
-using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
+using Nep3ArchipelagoClient.MemoryInterface;
+using Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
@@ -8,7 +8,7 @@ using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
 using System.Text;
 
-namespace Nep3ArchipelagoClient.src.Hooks
+namespace Nep3ArchipelagoClient.Hooks
 {
     public class ShopHook
     {

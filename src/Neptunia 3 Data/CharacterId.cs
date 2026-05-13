@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nep3ArchipelagoClient.src.Neptunia_3_Data
+namespace Nep3ArchipelagoClient.Neptunia_3_Data
 {
     public enum CharacterId:int
     {

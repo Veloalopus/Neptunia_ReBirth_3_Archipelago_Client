@@ -1,10 +1,10 @@
-﻿using Nep3ArchipelagoClient.src.MemoryInterface;
+﻿using Nep3ArchipelagoClient.MemoryInterface;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
 using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
 
-namespace Nep3ArchipelagoClient.src.Hooks
+namespace Nep3ArchipelagoClient.Hooks
 {
     public enum PlanFlags : byte
     {
@@ -16,8 +16,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
     internal class PlanHooks
     {
         public static List<IAsmHook> _asmHooks = new();
-        public static byte ReadPlan(int planId) => Memory.Instance.Read<byte>(SaveGame.SaveGamePointer + (nuint)(planId + 0x1e1fc) * 8);
-        public static void FrocePlan(int planId, PlanFlags flag) => Memory.Instance.Write<byte>(SaveGame.SaveGamePointer + (nuint)(planId + 0x1e1fc) * 8, (byte)flag);
+        public static byte ReadPlan(int planId) => Memory.Instance.Read<byte>(Mod.SaveGame.SaveGamePointer + ((nuint)planId + Mod.SaveGame.PlanOffset) * 8);
+        public static void FrocePlan(int planId, PlanFlags flag) => Memory.Instance.Write<byte>(Mod.SaveGame.SaveGamePointer + ((nuint)planId + Mod.SaveGame.PlanOffset) * 8, (byte)flag);
 
         public static IFunction<TooglePlan> _TogglePlan;
 

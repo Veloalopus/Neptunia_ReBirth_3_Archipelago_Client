@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Nep3ArchipelagoClient.src.Neptunia_3_Data;
+using Nep3ArchipelagoClient.Neptunia_3_Data;
 
-namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
+namespace Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear
 {
     internal class ProgressiveGear
     {

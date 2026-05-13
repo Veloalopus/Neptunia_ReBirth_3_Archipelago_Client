@@ -1,14 +1,14 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
-using Nep3ArchipelagoClient.src.MemoryInterface;
+using Nep3ArchipelagoClient.MemoryInterface;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
 using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
 using System.Text;
-using static Nep3ArchipelagoClient.src.Hooks.TextHooks;
+using static Nep3ArchipelagoClient.Hooks.TextHooks;
 
-namespace Nep3ArchipelagoClient.src.Hooks
+namespace Nep3ArchipelagoClient.Hooks
 {
     internal class EnemyHooks
     {

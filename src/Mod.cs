@@ -1,12 +1,11 @@
-﻿using Reloaded.Hooks.ReloadedII.Interfaces;
-using Reloaded.Mod.Interfaces;
-using Nep3ArchipelagoClient.Template;
-using Nep3ArchipelagoClient.Configuration;
+﻿using Nep3ArchipelagoClient.Configuration;
+using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.MemoryInterface;
-using Nep3ArchipelagoClient.src;
-using Nep3ArchipelagoClient.src.Hooks;
+using Nep3ArchipelagoClient.Template;
+using Reloaded.Hooks.ReloadedII.Interfaces;
+using Reloaded.Mod.Interfaces;
 using System.Diagnostics;
-
+using System.Reflection;
 
 
 
@@ -54,6 +53,10 @@ public class Mod : ModBase // <= Do not Remove.
     public static ProcessModule Module = null;
     public static Archipelago.APClient APClient = new();
 
+    internal static SaveGame SaveGame;
+    internal static Inventory Inventory;
+    internal static NeptuniaGame Game;
+
     public Mod(ModContext context)
     {
         _modLoader = context.ModLoader;
@@ -65,20 +68,25 @@ public class Mod : ModBase // <= Do not Remove.
 
 #if DEBUG
         // Attaches debugger in debug mode; ignored in release.
-        //Debugger.Launch();
+        Debugger.Launch();
 #endif
         Module = Process.GetCurrentProcess().MainModule;
         ModuleBase = (UIntPtr)Module.BaseAddress;
-
-        Hooks.SetupAllHooks(_hooks);
-        // For more information about this template, please see
-        // https://reloaded-project.github.io/Reloaded-II/ModTemplate/
-
-        // If you want to implement e.g. unload support in your mod,
-        // and some other neat features, override the methods in ModBase.
-
-        // TODO: Implement some mod logic
-
+        switch(Module.ModuleName){
+            case "NeptuniaReBirth1.exe":
+                Game = NeptuniaGame.Neptunia_ReBirth_1;
+                break;
+            case "NeptuniaReBirth2.exe":
+                Game = NeptuniaGame.Neptunia_ReBirth_2;
+                break;
+            case "NeptuniaReBirth3.exe":
+            default:
+                Game = NeptuniaGame.Neptunia_ReBirth_3;
+                break;
+        }
+        Console.WriteLine($"Playing: {Game.ToString()}");
+        Hooks.Hooks.SetupAllHooks(_hooks);
+        
 
         APClient.ConnectToServer(_configuration.Server, _configuration.Port, _configuration.Player);
 
@@ -86,18 +94,22 @@ public class Mod : ModBase // <= Do not Remove.
         t.Start();
     }
 
-    internal static SaveGame SaveGame;
-    internal static Inventory Inventory;
+
     static void MainLoop()
     {
-        bool test = true;
-        SaveGame = new(ModuleBase);
-        Inventory = new();
+        switch (Game)
+        {
+            case NeptuniaGame.Neptunia_ReBirth_3:
+                SaveGame = new RB3SaveGame(ModuleBase);
+                Inventory = new RB3Inventory(SaveGame);
+                break; 
+        }
+
         while (true)
         {
             Thread.Sleep(100);
             APClient.update();
-            //SaveGame.SetupSaveFile();
+            SaveGame.SetupSaveFile();
         }
     }
 

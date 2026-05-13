@@ -1,16 +1,15 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
-using Nep3ArchipelagoClient.src.MemoryInterface;
+using Nep3ArchipelagoClient.MemoryInterface;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
 using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
 using System.Text;
 
-namespace Nep3ArchipelagoClient.src.Hooks
+namespace Nep3ArchipelagoClient.Hooks
 {
     public class ItemCollectionHooks
     {
-        public static bool IsAPItem = true;
         public static List<IAsmHook> _asmHooks = new();
 
         public static IReverseWrapper<GetGatherSpot> _onGatherSpot;
@@ -58,31 +57,16 @@ namespace Nep3ArchipelagoClient.src.Hooks
             if(FunctionScanner.FindFunction("Loot Gather Spot", "55 8B EC FF 75 ?? A1 ?? ?? ?? ?? FF 75 ?? FF 70", out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(lootGather, (int)(Mod.ModuleBase + offset + 17), AsmHookBehaviour.ExecuteFirst).Activate());
 
-
-
-
-            string[] collectGatherSpot = {
-                "use32",
-                "pushad",
-                "pushfd",
-                "mov edx,[ebp-0x228]",
-                "mov eax,[ebp-0x22c]",
-                $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnCollectGatherSpot, out _onCollectionGatherSpot)}",
-                "popfd",
-                "popad",
-                "mov ecx,[ebp-0x04]",
-            };
-            if(FunctionScanner.FindFunction("Collect Treasure", "E8 ?? ?? ?? ?? 8B 4D ?? 83 C4 0C 33 CD B0 01 5B E8",out offset))
-                _asmHooks.Add(hooks.CreateAsmHook(collectGatherSpot, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
             string[] getTreasureId = {
                 "use32",
                 "pushad",
                 "pushfd",
+                "mov ecx,[esp+0x24]",
                 $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetDungeonTresureId, out _onGetDungeonTresureId)}",
                 "popfd",
                 "popad",
             };
-            if(FunctionScanner.FindFunction("Collect Treasure", "E8 ?? ?? ?? ?? 83 C4 04 85 C0 74 ?? 50 E8 ?? ?? ?? ?? 83 C4 04 84 C0 74 ?? 6A 01 56",out offset))
+            if(FunctionScanner.FindFunction("Collect Treasure", "E8 ?? ?? ?? ?? 83 C4 08 C7 47 ?? 00 00 00 00 C7 03 00 00 00 00", out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(getTreasureId, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
 
             string[] removeDungeonCreation = {
@@ -91,11 +75,9 @@ namespace Nep3ArchipelagoClient.src.Hooks
             };
             if(FunctionScanner.FindFunction("Create Dungeon", "55 8B EC 57 8B 7D ?? 85 FF 75 ?? 32 C0 5F 5D C3 A1 ?? ?? ?? ?? 53 8B 98 ?? ?? ?? ?? 83 FB 50 73 ?? 57 E8 ?? ?? ?? ?? 0F B7 C8 83 C4 04 66 85 C9 75",out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(removeDungeonCreation, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
-
-
         }
 
-        static bool allowOrignalLoot = true;
+        public static bool allowOrignalLoot = true;
         //get dungeon and spot id to send it to the ap server
         [Function(new[] { FunctionAttribute.Register.eax,FunctionAttribute.Register.edx }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]
         public delegate int GetGatherSpot(int dungeonID,int dungeoFlag);
@@ -109,7 +91,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
                 long GatherspotID = (eax * 10) + edx + 1;
                 if (Mod.APClient.CheckedLocation.Contains(GatherspotID)) return eax;
                 Mod.APClient.SendLocation(GatherspotID);
-                Mod.APClient.GetItemName(GatherspotID, ref TextHooks.ReplacementText);
+                TextHooks.NewText(Mod.APClient.GetItemName(GatherspotID));
                 TextHooks.DoReplaceText = true;
                 allowOrignalLoot = false;
             }
@@ -137,8 +119,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
             long DungeonTreasureId = APClient.TreasureBaseID+ecx;
             TextHooks.DoReplaceText = true; 
             Mod.APClient.SendLocation(DungeonTreasureId);
-            Mod.APClient.GetItemName(DungeonTreasureId, ref TextHooks.ReplacementText);
-
+            TextHooks.NewText(Mod.APClient.GetItemName(DungeonTreasureId));
             return eax;
         }
 
