@@ -78,10 +78,12 @@ public class Mod : ModBase // <= Do not Remove.
                 break;
             case "NeptuniaReBirth2.exe":
                 Game = NeptuniaGame.Neptunia_ReBirth_2;
+                APClient.Game = "Hyperdimension Neptunia Re;Birth2 Sisters Generation";
                 break;
             case "NeptuniaReBirth3.exe":
             default:
                 Game = NeptuniaGame.Neptunia_ReBirth_3;
+                APClient.Game = "Hyperdimension Neptunia Re;Birth3 V GENERATION";
                 break;
         }
         Console.WriteLine($"Playing: {Game.ToString()}");

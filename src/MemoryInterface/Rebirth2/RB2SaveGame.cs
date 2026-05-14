@@ -37,6 +37,7 @@ namespace Nep3ArchipelagoClient
                 memory.Write<byte>(SaveGamePointer + APSaveLocation - 17, 1);
 
 #if DEBUG
+                Test_CharacterUnlock();
                 Test_DungeonUnlock();
                 #endif
             }
@@ -86,6 +87,18 @@ namespace Nep3ArchipelagoClient
             for(short i = 1; i < 37; i++)
             {
                 AddDungeon(i);
+            }
+        }
+        void Test_CharacterUnlock()
+        {
+            for(short i = 1; i < 25; i++)
+            {
+                RemovePartyMember(i);
+            }
+            Thread.Sleep(5000);
+            for(short i = 1; i < 25; i++)
+            {
+                AddPartyMember(i);
             }
         }
     }

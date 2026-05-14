@@ -24,6 +24,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         private Dictionary<long, ScoutedItemInfo> ItemAtLocation = new();
         internal CharacterId StartingCharacter = CharacterId.nepgear;
         internal HashSet<long> CheckedLocation = new();
+        public string Game = "Hyperdimension Neptunia Re;Birth3 V GENERATION";
         public bool ConnectToServer(string destination,int port,string user, string password = "")
         {
             if (Session != null && Session.Socket.Connected)
@@ -33,7 +34,7 @@ namespace Nep3ArchipelagoClient.Archipelago
             Session = ArchipelagoSessionFactory.CreateSession(destination, port);
             try
             {
-                loginResult = Session.TryConnectAndLogin("Hyperdimension Neptunia Re;Birth3 V GENERATION", user, ItemsHandlingFlags.AllItems, password: password);
+                loginResult = Session.TryConnectAndLogin(Game, user, ItemsHandlingFlags.AllItems, password: password);
             }
             catch(Exception e)
             {
