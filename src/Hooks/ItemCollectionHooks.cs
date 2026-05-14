@@ -69,12 +69,7 @@ namespace Nep3ArchipelagoClient.Hooks
             if(FunctionScanner.FindFunction("Collect Treasure", "E8 ?? ?? ?? ?? 83 C4 08 C7 47 ?? 00 00 00 00 C7 03 00 00 00 00", out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(getTreasureId, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
 
-            string[] removeDungeonCreation = {
-                "use32",
-                "ret",
-            };
-            if(FunctionScanner.FindFunction("Create Dungeon", "55 8B EC 57 8B 7D ?? 85 FF 75 ?? 32 C0 5F 5D C3 A1 ?? ?? ?? ?? 53 8B 98 ?? ?? ?? ?? 83 FB 50 73 ?? 57 E8 ?? ?? ?? ?? 0F B7 C8 83 C4 04 66 85 C9 75",out offset))
-                _asmHooks.Add(hooks.CreateAsmHook(removeDungeonCreation, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+
         }
 
         public static bool allowOrignalLoot = true;

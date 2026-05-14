@@ -99,10 +99,15 @@ public class Mod : ModBase // <= Do not Remove.
     {
         switch (Game)
         {
+            case NeptuniaGame.Neptunia_ReBirth_2:
+                SaveGame = new RB2SaveGame(ModuleBase);
+                Inventory = new RB2Inventory(SaveGame);
+                break;
             case NeptuniaGame.Neptunia_ReBirth_3:
                 SaveGame = new RB3SaveGame(ModuleBase);
                 Inventory = new RB3Inventory(SaveGame);
                 break; 
+
         }
 
         while (true)
