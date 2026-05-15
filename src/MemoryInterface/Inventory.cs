@@ -12,7 +12,6 @@ namespace Nep3ArchipelagoClient.MemoryInterface
     {
         Memory Memory => Memory.Instance;
         protected SaveGame SaveGame;
-        protected nuint InventoryOffset;
         protected const UIntPtr ItemCountOffsetPointer = 0x02;
         protected UIntPtr InventoryPointer => InventorySizePointer + 0x04;
         protected const int ItemLength = 0x4;
@@ -22,14 +21,7 @@ namespace Nep3ArchipelagoClient.MemoryInterface
         {
             SaveGame = savegame;
         }
-        public int CurrentItemCount()
-        {
-            return Memory.Read<int>(SaveGame.SaveGamePointer + InventoryOffset);
-        }
-        public void AddItem(int id, int quantity)
-        {
-            ItemCollectionHooks._addItemFunction.GetWrapper()((uint)id, (uint)quantity, (char)1);
-        }
+
         public int CurrentInventoryCount => Memory.Instance.Read<short>(InventorySizePointer);
         public bool FindItem(short itemID, out int position)
         {
@@ -47,11 +39,12 @@ namespace Nep3ArchipelagoClient.MemoryInterface
             return false;
         }
 
-        public void AddItem(short itemID, byte amount)
+        public void AddItem(int itemID, int amount)
         {
-            ItemCollectionHooks._addItemFunction.GetWrapper()((uint)itemID, amount, (char)1);
+            ItemCollectionHooks._addItemFunction.GetWrapper()((uint)itemID, (uint)amount, (char)1);
             SaveGame.CheckUnlockGoalCondition();
         }
+
 
         UIntPtr ItemPosition(int slot)
         {

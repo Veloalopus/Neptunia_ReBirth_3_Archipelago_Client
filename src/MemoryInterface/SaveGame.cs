@@ -8,19 +8,15 @@ namespace Nep3ArchipelagoClient
 {
     internal abstract class SaveGame
     {
-        public UIntPtr SaveGamePointer = 0;
+        protected nuint SaveGameOffest;
+        public UIntPtr SaveGamePointer => Memory.Instance.Read<uint>(Mod.ModuleBase + SaveGameOffest);
         protected uint APSaveLocation;
         public nuint PlanOffset;
         protected uint EventFlagOffset;
         Memory memory => Memory.Instance;
 
-        protected SaveGame(UIntPtr baseAddress,uint offset)
+        protected SaveGame()
         {
-            while (SaveGamePointer == 0)
-            {
-                SaveGamePointer = Memory.Instance.Read<uint>(Mod.ModuleBase + offset);
-                Thread.Sleep(100);
-            }
         }
 
         public abstract int CurrentDungeon();
@@ -38,7 +34,6 @@ namespace Nep3ArchipelagoClient
             else
                 FlagRegion &= (byte)(0xFF - (1 << (EventID % 8)));
             memory.Write<byte>(SaveGamePointer + EventFlagOffset + (nuint)(EventID / 8), FlagRegion);
-            CheckUnlockGoalCondition();
         }
         public abstract void SetupSaveFile();
 

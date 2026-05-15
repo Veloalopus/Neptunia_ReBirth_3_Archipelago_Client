@@ -12,9 +12,10 @@ namespace Nep3ArchipelagoClient
         static Memory memory = Memory.Instance;
         Inventory Inventory;
 
-        public RB2SaveGame(UIntPtr baseAddress) : base(baseAddress, 0x443310)
+        public RB2SaveGame()
         {
-            Inventory = new RB3Inventory(this);
+            SaveGameOffest = 0x443310;
+            Inventory = new RB2Inventory(this);
             APSaveLocation = 0x1032c;
             PlanOffset = 0x443310;
             EventFlagOffset = 0x91c;
@@ -75,12 +76,10 @@ namespace Nep3ArchipelagoClient
         public override void CheckUnlockGoalCondition()
         {
             bool old_sword = Inventory.FindItem(254, out int _);
-
-            if (old_sword)
-            {
-                SetEventFlag(522, true);
-                SetEventFlag(523, true);
-            }
+            if (!old_sword) return;
+            SetEventFlag(522, true);
+            SetEventFlag(523, true);
+            
         }
         void Test_VGMRun()
         {
@@ -111,7 +110,6 @@ namespace Nep3ArchipelagoClient
         void Test_Goal()
         {
             Inventory.AddItem(254, 1);
-
         }
 
         public override bool IsGoalAchieved(long APLocation)

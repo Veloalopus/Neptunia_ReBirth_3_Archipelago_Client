@@ -76,15 +76,21 @@ public class Mod : ModBase // <= Do not Remove.
             case "NeptuniaReBirth1.exe":
                 Game = NeptuniaGame.Neptunia_ReBirth_1;
                 APClient.Game = "Hyperdimension Neptunia Re;Birth1";
+                SaveGame = new RB1SaveGame();
+                Inventory = new RB1Inventory(SaveGame);
                 break;
             case "NeptuniaReBirth2.exe":
                 Game = NeptuniaGame.Neptunia_ReBirth_2;
                 APClient.Game = "Hyperdimension Neptunia Re;Birth2 Sisters Generation";
+                SaveGame = new RB2SaveGame();
+                Inventory = new RB2Inventory(SaveGame);
                 break;
             case "NeptuniaReBirth3.exe":
             default:
                 Game = NeptuniaGame.Neptunia_ReBirth_3;
                 APClient.Game = "Hyperdimension Neptunia Re;Birth3 V GENERATION";
+                SaveGame = new RB3SaveGame();
+                Inventory = new RB3Inventory(SaveGame);
                 break;
         }
         Console.WriteLine($"Playing: {Game.ToString()}");
@@ -92,33 +98,15 @@ public class Mod : ModBase // <= Do not Remove.
 
         APClient.ConnectToServer(_configuration.Server, _configuration.Port, _configuration.Player);
 
-        var t = new Thread(start: MainLoop);
-        t.Start();
+        _loop = Task.Run(MainLoop);
     }
+    Task _loop;
 
-
-    static void MainLoop()
+    public static void MainLoop()
     {
-        switch (Game)
-        {
-            case NeptuniaGame.Neptunia_ReBirth_1:
-                SaveGame = new RB1SaveGame(ModuleBase);
-                Inventory = new RB1Inventory(SaveGame);
-                break;
-            case NeptuniaGame.Neptunia_ReBirth_2:
-                SaveGame = new RB2SaveGame(ModuleBase);
-                Inventory = new RB2Inventory(SaveGame);
-                break;
-            case NeptuniaGame.Neptunia_ReBirth_3:
-                SaveGame = new RB3SaveGame(ModuleBase);
-                Inventory = new RB3Inventory(SaveGame);
-                break; 
-
-        }
-
         while (true)
         {
-            Thread.Sleep(100);
+            if (SaveGame.SaveGamePointer == 0) continue;
             APClient.update();
             SaveGame.SetupSaveFile();
         }

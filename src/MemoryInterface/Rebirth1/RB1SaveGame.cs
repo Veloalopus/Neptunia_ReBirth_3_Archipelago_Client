@@ -11,8 +11,9 @@ namespace Nep3ArchipelagoClient
         static Memory memory = Memory.Instance;
         Inventory Inventory;
 
-        public RB1SaveGame(UIntPtr baseAddress) : base(baseAddress, 0x443310)
+        public RB1SaveGame()
         {
+            SaveGameOffest = 0;
             Inventory = new RB3Inventory(this);
             APSaveLocation = 0x1032c;
             PlanOffset = 0x443310;
